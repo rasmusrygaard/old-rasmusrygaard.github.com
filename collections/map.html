@@ -119,10 +119,14 @@
 
 <ul>
 <li>If <code>value</code> is a key in the map, <code>histogram</code> returns a reference to the <code>int</code> in the map.</li>
-<li>If <code>value</code> is <em>not</em> a key in the map, three things happen:</li>
+<li>If <code>value</code> is <em>not</em> a key in the map, three things happen:
+
+<ol>
 <li>We create a default value of type ValueType. In this case, we get an <code>int</code> with value 0.</li>
 <li>The <code>map</code> adds a mapping from <code>values</code> to this value.</li>
 <li>The <code>map</code> returns a reference to this new value.</li>
+</ol>
+</li>
 </ul>
 
 
