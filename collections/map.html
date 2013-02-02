@@ -99,23 +99,32 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">histogram</span><span class="p">;</span>
 </span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>  <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">readInteger</span><span class="p">(</span><span class="s">&quot;Enter a number: &quot;</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="n">SENTINEL</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kt">int</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">values</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">values</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">oldValue</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">histogram</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">histogram</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">oldValue</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">values</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">histogram</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Here, we store our histogram in the <code>Map&lt;int, int&gt;</code> called <code>values</code>. This map stores mappings from keys to the number of occurrences for that key. Before we add each value, we check if we have seen that value before. If not, we add a new mapping to the value 1 since we have seen <code>value</code> exactly once. Otherwise, we increment this count.</p>
+<p>Here, we store our histogram in the <code>Map&lt;int, int&gt;</code> called <code>histogram</code>. This map stores mappings from keys to the number of occurrences for that key. Before we add each value, we check if we have seen that value before. If not, we add a new mapping to the value 1 since we have seen <code>value</code> exactly once. Otherwise, we increment this count.</p>
 
-<p>This seems reasonable, but the CS106B libraries lets us write something even more convenient. Looking at the <a href="http://www.stanford.edu/class/cs106b/materials/cppdoc/Map-class.html#Operator:[]" title="Stanford C++ Map Documentation">map documentation</a>, we see that the <code>[]</code> operator creates a new default instance of the value type if a mapping does not already exist. Therefore, we can rewrite the previous code as:</p>
+<p>This seems reasonable, but the CS106B libraries lets us write something even more convenient. Looking at the <a href="http://www.stanford.edu/class/cs106b/materials/cppdoc/Map-class.html#Operator:[]" title="Stanford C++ Map Documentation">map documentation</a>, we see that the <code>[]</code> operator has two cases:</p>
+
+<pre><code>- If ```value``` is a key in the map, ```histogram``` returns a reference to the ```int``` in the map.
+- If ```value``` is *not* a key in the map, three things happen:
+    1. We create a default value of type ValueType. In this case, we get an ```int``` with value 0.
+    2. The ```map``` adds a mapping from ```values``` to this value.
+    2. The ```map``` returns a reference to this new value.
+</code></pre>
+
+<p>Therefore, we can rewrite the previous code as:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
